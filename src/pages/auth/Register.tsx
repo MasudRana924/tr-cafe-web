@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../redux/reducers/auth/authSlice';
 import type { AppDispatch, RootState } from '../../redux/reducers/store';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+import showToast from '../../utils/toast';
 const Register: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>();
@@ -13,6 +14,7 @@ const Register: React.FC = () => {
   useEffect(() => {
     if (isOtpSent === 'succeeded') {
       navigate('/auth/verify-otp');
+       showToast('success','OTP sent to your email')
     }
     if (errorMessage) {
       // console.log("error", errorMessage.error)

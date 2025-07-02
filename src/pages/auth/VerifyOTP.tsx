@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearOtpVerifiedState, verifyOtp } from '../../redux/reducers/auth/authSlice';
 import type { AppDispatch, RootState } from '../../redux/reducers/store';
 import { useNavigate } from 'react-router-dom';
-
+import showToast from '../../utils/toast';
 const VerifyOTP: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -15,6 +15,7 @@ const VerifyOTP: React.FC = () => {
     if (isOtpVerified === 'succeeded') {
       navigate('/auth/login');
       dispatch(clearOtpVerifiedState())
+        showToast('success','OTP verified successfully')
     }
   }, [dispatch,isOtpVerified, navigate]);
   const handleChange = (index: number, value: string) => {

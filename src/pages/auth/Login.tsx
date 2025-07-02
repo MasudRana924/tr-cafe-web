@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/reducers/auth/authSlice';
 import type { AppDispatch, RootState } from '../../redux/reducers/store';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+import showToast from '../../utils/toast';
 const Login: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>();
@@ -11,8 +12,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   useEffect(() => {
     if (isAuthenticated === 'success') {
-      // alert('Logged in');
       navigate('/');
+       showToast('success','Logged in successfull ')
     }
   }, [isAuthenticated, navigate, errorMessage]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
