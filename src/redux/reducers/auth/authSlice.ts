@@ -47,7 +47,7 @@ export const verifyOtp = createAsyncThunk(
     try {
       const response = await publicPost('/verify-otp', otpData);
       localStorage.removeItem('otpVerificationEmail');
-      return response.data;
+      return response;
     } catch (error) {
       return rejectWithValue(handleAuthError(error));
     }
@@ -59,7 +59,7 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await publicPost('/login', credentials);
-      return response.data;
+      return response;
     } catch (error) {
       return rejectWithValue(handleAuthError(error));
     }
