@@ -13,7 +13,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
 useEffect(() => {
   if (isAuthenticated === 'success') {
-    const redirectTo = location.state?.from?.pathname || '/';
+    const redirectTo = location.state?.from || '/';
     navigate(redirectTo, { replace: true });
     showToast('success', 'Logged in successfully');
   }

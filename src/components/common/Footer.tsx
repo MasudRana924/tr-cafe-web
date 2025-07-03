@@ -7,7 +7,7 @@ const Footer = () => {
             <div className="w-full -mx-6 lg:w-2/5">
               <div className="px-6">
                 <a href="#">
-                  <img className="w-auto h-7" src="" alt="Tr-Cafe" />
+                  <img className="w-auto h-7" src="Tr-cafe" alt="Tr-Cafe" />
                 </a>
 
                 <p className="max-w-sm mt-2  text-white">Join 31,000+ other and never miss out on new tips, tutorials, and more.</p>
