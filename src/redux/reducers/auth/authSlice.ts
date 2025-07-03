@@ -81,8 +81,8 @@ const authSlice = createSlice({
       state.errorMessage = null;
     },
     clearOtpVerifiedState: (state) => {
-      state.isOtpVerified = 'completetd',
-        state.isOtpSent = 'completetd'
+      state.isOtpVerified = 'completetd';
+      state.isOtpSent = 'completetd'
     }
   },
   extraReducers: (builder) => {
