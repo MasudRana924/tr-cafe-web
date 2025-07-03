@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import type { ReactNode } from "react";
 import type { RootState } from "../redux/reducers/store";
 
@@ -8,13 +8,16 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
+  const location = useLocation();
   const { isAuthenticated } = useSelector((state: RootState) => state.user);
 
-  // Add loading state if needed
-  // if (isAuthenticated === undefined) return <LoadingSpinner />;
+  if (isAuthenticated === 'success') {
+    return children;
+  }
 
-  // More robust check
-  return isAuthenticated === 'success' ? children : <Navigate to="/auth/login" replace />;
+  // Pass the entire location object, not just pathname
+  return  <Navigate to="/auth/login" state={{ from: location }} replace />;
+;
 };
 
 export default PrivateRoute;

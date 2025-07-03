@@ -2,27 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/reducers/auth/authSlice';
 import type { AppDispatch, RootState } from '../../redux/reducers/store';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import showToast from '../../utils/toast';
 const Login: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
   const { status, errorMessage, isAuthenticated } = useSelector((state: RootState) => state.user);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  useEffect(() => {
-    if (isAuthenticated === 'success') {
-      navigate('/');
-       showToast('success','Logged in successfull ')
-    }
-  }, [isAuthenticated, navigate, errorMessage]);
+useEffect(() => {
+  if (isAuthenticated === 'success') {
+    const redirectTo = location.state?.from?.pathname || '/';
+    navigate(redirectTo, { replace: true });
+    showToast('success', 'Logged in successfully');
+  }
+}, [isAuthenticated, navigate, location.state]);
+
+
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
   };
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-sm w-full space-y-8">
+    <div className="min-h-screen flex items-center  justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-sm w-full space-y-8 border  rounded-md shadow-sm p-6">
         <div>
           <h2 className="mt-6 text-start text-xl font-medium text-gray-900">
             Sign in to your account
