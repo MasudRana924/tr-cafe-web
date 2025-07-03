@@ -20,7 +20,7 @@ const Register: React.FC = () => {
       // console.log("error", errorMessage.error)
     }
   }, [isOtpSent, navigate, errorMessage]);
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(registerUser({ email, password }));
   };
@@ -43,7 +43,7 @@ const Register: React.FC = () => {
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-red-800"> {typeof errorMessage === 'string' ? errorMessage : errorMessage?.error}</p>
+                <p className="text-sm text-red-800"> {errorMessage}</p>
               </div>
             </div>
           </div>

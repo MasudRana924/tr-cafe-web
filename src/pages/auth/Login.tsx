@@ -21,10 +21,10 @@ useEffect(() => {
 
 
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(loginUser({ email, password }));
-  };
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  e.preventDefault();
+  dispatch(loginUser({ email, password }));
+};
   return (
     <div className="min-h-screen flex items-center  justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-sm w-full space-y-8 border  rounded-md shadow-sm p-6">
@@ -43,7 +43,8 @@ useEffect(() => {
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-red-800"> {typeof errorMessage === 'string' ? errorMessage : errorMessage?.error}</p>
+               <p className="text-sm text-red-800">{errorMessage}</p>
+
               </div>
             </div>
           </div>
