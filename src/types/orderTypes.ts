@@ -1,5 +1,7 @@
+import type { Food } from "./foodTypes";
 export interface OrderItem {
-  food: string;
+_id:string;
+   food: Food;
   quantity: number;
   price: number;
 }

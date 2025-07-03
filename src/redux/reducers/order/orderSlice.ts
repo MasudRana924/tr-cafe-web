@@ -26,8 +26,9 @@ export const createOrder = createAsyncThunk(
       };
       const response = await privatePost("/orders", token, orderData);
       return response;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to create order");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      return rejectWithValue(error?.response?.data?.message || "Failed to create order");
     }
   }
 );
@@ -56,8 +57,9 @@ export const getUserOrders = createAsyncThunk(
     try {
       const response = await privateGet("/orders", token);
       return response;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to fetch orders");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      return rejectWithValue(error?.response?.data?.message || "Failed to create order");
     }
   }
 );
