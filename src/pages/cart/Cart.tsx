@@ -27,10 +27,18 @@ const Cart = () => {
   return (
     <div className=" relative p-4 max-w-5xl 2xl:max-w-6xl mx-auto md:mt-24 mb-24">
       {items.length === 0 ? (
-        <div className="text-center py-20 bg-white ">
-          <FaShoppingCart className="mx-auto text-red-500 text-6xl mb-4" />
-          <p className="text-gray-900 text-lg">Your cart is currently empty.</p>
-        </div>
+        <div className="text-center py-16 bg-gray-50 rounded-lg border border-gray-100">
+  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+    <FaShoppingCart className="text-red-500 text-2xl" />
+  </div>
+  <h3 className="text-lg font-medium text-gray-900 mb-2">Your cart is empty</h3>
+  <p className="text-gray-600 text-sm mb-6">Add some items to get started</p>
+  <Link to="/">
+    <button className="px-6 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors">
+      Continue Shopping
+    </button>
+  </Link>
+</div>
       ) : (
         <div className="bg-white rounded-md  p-6 grid md:grid-cols-3 gap-8">
           {/* Cart Items */}

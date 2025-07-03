@@ -116,8 +116,8 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="">
-      <div className="w-full md:w-3/4 mx-auto pt-2 pb-2">
+    <div className="w-full border shadow-md">
+      <div className="w-full md:w-3/4 mx-auto pt-2 pb-2  ">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <button
