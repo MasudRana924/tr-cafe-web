@@ -6,6 +6,7 @@ import type {
   VerifyOtpData
 } from '../../../types/authTypes';
 import { publicPost } from '../../../services/apiCaller';
+import { AxiosError } from 'axios';
 
 const initialState: AuthState = {
   isAuthenticated: 'loading',
@@ -18,9 +19,12 @@ const initialState: AuthState = {
   isOtpVerified: 'idle'
 };
 
-// Helper function for error handling
-const handleAuthError = (error: any) => {
-  return error.response?.data?.error || 'An unexpected error occurred';
+// Simplified error handler
+const handleAuthError = (error: unknown): string => {
+  if (error instanceof AxiosError && error.response?.data?.error) {
+    return error.response.data.error;
+  }
+  return 'An unexpected error occurred';
 };
 
 // Async thunks
@@ -29,7 +33,6 @@ export const registerUser = createAsyncThunk(
   async (userData: RegisterData, { rejectWithValue }) => {
     try {
       const response = await publicPost('/register', userData);
-      // Store email in localStorage
       localStorage.setItem('otpVerificationEmail', userData.email);
       return response.data;
     } catch (error) {
@@ -43,7 +46,6 @@ export const verifyOtp = createAsyncThunk(
   async (otpData: VerifyOtpData, { rejectWithValue }) => {
     try {
       const response = await publicPost('/verify-otp', otpData);
-      // Clear the email from localStorage after successful verification
       localStorage.removeItem('otpVerificationEmail');
       return response.data;
     } catch (error) {
@@ -57,7 +59,7 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await publicPost('/login', credentials);
-      return response;
+      return response.data;
     } catch (error) {
       return rejectWithValue(handleAuthError(error));
     }
@@ -71,7 +73,6 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      state.status = 'idle';
       state.isAuthenticated = 'loading';
       state.errorMessage = null;
       state.registeredEmail = null;
@@ -80,26 +81,26 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.errorMessage = null;
     },
-    clearOtpVerifiedState: (state) => {
+     clearOtpVerifiedState: (state) => {
       state.isOtpVerified = 'completetd';
-      state.isOtpSent = 'completetd'
+      state.isOtpSent = 'completetd';
     }
   },
   extraReducers: (builder) => {
     builder
+      // Register cases
       .addCase(registerUser.pending, (state) => {
         state.isOtpSent = 'loading';
         state.errorMessage = null;
       })
       .addCase(registerUser.fulfilled, (state) => {
-        state.status = 'succeeded';
         state.isOtpSent = 'succeeded';
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isOtpSent = 'failed';
         state.errorMessage = action.payload as string;
-        localStorage.removeItem('otpVerificationEmail');
       })
+
       // OTP verification cases
       .addCase(verifyOtp.pending, (state) => {
         state.isOtpVerified = 'loading';
@@ -107,12 +108,12 @@ const authSlice = createSlice({
       })
       .addCase(verifyOtp.fulfilled, (state) => {
         state.isOtpVerified = 'succeeded';
-        state.registeredEmail = null;
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.isOtpVerified = 'failed';
         state.errorMessage = action.payload as string;
       })
+
       // Login cases
       .addCase(loginUser.pending, (state) => {
         state.status = 'loading';
@@ -121,13 +122,13 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.isAuthenticated = 'success';
-        state.user = action.payload?.user || null;
-        state.token = action?.payload?.token || null;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
         state.errorMessage = action.payload as string;
-      })
+      });
   }
 });
 
